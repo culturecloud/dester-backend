@@ -29,3 +29,8 @@ CYGWIN* | MINGW32* | MSYS* | MINGW*)
     exit 1
     ;;
 esac
+
+if [ ! -d venv ]; then
+    virtualenv venv \
+    && venv/bin/pip3 install --no-cache-dir -r requirements.txt
+fi
