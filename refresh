@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ -d 'venv' ]; then
+    rm -rf venv
+fi
+
+python3 -m venv venv && \
+$PIP_INSTALL pip setuptools wheel && \
+$PIP_INSTALL -r requirements.txt && \
+reset

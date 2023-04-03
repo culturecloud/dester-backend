@@ -17,8 +17,8 @@ client = AsyncClient()
 
 @router.get("/image/{quality}/{filename}", status_code=200)
 async def image_path(
-    quality: str = Path(..., title="Quality for the requesting image"),
-    filename: str = Path(..., title="Filename for the requesting image"),
+    quality: str = Path(title="Quality for the requesting image"),
+    filename: str = Path(title="Filename for the requesting image"),
 ):
     path = f"https://image.tmdb.org/t/p/{quality}/{filename}"
     req = client.build_request("GET", path)
@@ -33,7 +33,7 @@ async def image_path(
     status_code=200,
 )
 async def image_path(
-    file_id: str = Path(title := "File ID of the thumbnail that needs to be generated"),
+    file_id: str = Path(title="File ID of the thumbnail that needs to be generated"),
     rclone_index: int = 0,
 ):
     init_time = perf_counter()

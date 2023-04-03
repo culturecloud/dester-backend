@@ -7,15 +7,22 @@ from pymongo import TEXT, UpdateOne, MongoClient
 class MongoDB:
     """MongoDB class"""
 
-    def __init__(self, domain: str, username: str, password: str):
+    def __init__(self, db_uri: str, domain: str, username: str, password: str):
+        self.db_uri = db_uri
         self.domain = domain
         self.username = username
         self.password = password
         self.tlsca_ = certifi.where()
-        self.client = MongoClient(
-            f"mongodb+srv://{username}:{password}@{domain}/?retryWrites=true&w=majority",
-            tlsCAFile=self.tlsca_,
-        )
+        if self.db_uri:
+            self.client = MongoClient(
+                self.db_uri,
+                tlsCAFile=self.tlsca_,
+            )
+        else:
+            self.client = MongoClient(
+                f"mongodb+srv://{username}:{password}@{domain}/?retryWrites=true&w=majority",
+                tlsCAFile=self.tlsca_,
+            )
         self.db = self.client["main"]
         self.metadata = self.client["metadata"]
         self.accounts = self.client["accounts"]

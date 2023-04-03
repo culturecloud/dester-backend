@@ -22,23 +22,24 @@ from fastapi.responses import FileResponse, UJSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 
-if not settings.MONGODB_DOMAIN:
-    logger.error("No MongoDB domain found! Exiting.")
-    exit()
-if not settings.MONGODB_USERNAME:
-    logger.error("No MongoDB username found! Exiting.")
-    exit()
-if not settings.MONGODB_PASSWORD:
-    logger.error("No MongoDB password found! Exiting.")
-    exit()
+if not settings.MONGODB_URI:
+    if not settings.MONGODB_DOMAIN:
+        logger.error("No MongoDB domain found! Exiting.")
+        exit()
+    if not settings.MONGODB_USERNAME:
+        logger.error("No MongoDB username found! Exiting.")
+        exit()
+    if not settings.MONGODB_PASSWORD:
+        logger.error("No MongoDB password found! Exiting.")
+        exit()
+
 
 start_time = time.time()
 
 try:
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
 except RuntimeError:
-    loop = asyncio
-
+    loop = asyncio.new_event_loop()
 
 async def restart_rclone():
     """Force closes any running instances of the Rclone port then starts an Rclone RC server"""
